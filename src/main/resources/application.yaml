@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: TestResearch
+
+  datasource:
+    url: jdbc:postgres://localhost:5435/main_db
+    username: postgres
+    password: postgres
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.yaml
+    enabled: true
+    default-schema: public
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8081
