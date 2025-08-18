@@ -8,6 +8,7 @@ import oleborn.testresearch.exception.GlobalExceptionHandler;
 import oleborn.testresearch.feignclient.UserFeignClient;
 import oleborn.testresearch.mapper.UserAppMapperImpl;
 import oleborn.testresearch.model.dto.UserAppDto;
+import oleborn.testresearch.model.entity.AuthUserApp;
 import oleborn.testresearch.model.entity.UserApp;
 import oleborn.testresearch.moduletest.enums.EnumCase;
 import oleborn.testresearch.repository.UserAppRepository;
@@ -34,8 +35,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest
@@ -68,11 +68,11 @@ public class UserControllerTest {
     public void userCreateControllerTest() {
 
         //given
-        UserAppDto userAppDto = new UserAppDto(123L, "Den", "test@mail.ru");
+        UserAppDto userAppDto = new UserAppDto("Den", "test@mail.ru");
 
-        Mockito.when(userFeignClient.getAccess(anyLong())).thenReturn(true);
+        Mockito.when(userFeignClient.getAccess(anyString())).thenReturn(true);
         Mockito.when(userAppRepository.save(any(UserApp.class)))
-                .thenReturn(new UserApp(123L, "Den", "test@mail.ru"));
+                .thenReturn(new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp()));
 
         //when
         MvcResult mvcResult = mockMvc.perform(post("/users/create")
@@ -93,10 +93,10 @@ public class UserControllerTest {
     public void userCreateControllerValidTest() {
 
         //given
-        UserAppDto userAppDto = new UserAppDto(123L, "Den", "testmail.ru");
+        UserAppDto userAppDto = new UserAppDto("Den", "testmail.ru");
 
         Mockito.when(userAppRepository.save(any(UserApp.class)))
-                .thenReturn(new UserApp(123L, "Den", "test@mail.ru"));
+                .thenReturn(new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp()));
 
         //when
         MvcResult mvcResult = mockMvc.perform(post("/users/create")
@@ -117,11 +117,11 @@ public class UserControllerTest {
     public void userCreateControllerAccessTest() {
 
         //given
-        UserAppDto userAppDto = new UserAppDto(123L, "Den", "test@mail.ru");
+        UserAppDto userAppDto = new UserAppDto("Den", "test@mail.ru");
 
-        Mockito.when(userFeignClient.getAccess(anyLong())).thenReturn(false);
+        Mockito.when(userFeignClient.getAccess(anyString())).thenReturn(false);
         Mockito.when(userAppRepository.save(any(UserApp.class)))
-                .thenReturn(new UserApp(123L, "Den", "test@mail.ru"));
+                .thenReturn(new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp()));
 
         //when
         MvcResult mvcResult = mockMvc.perform(post("/users/create")
@@ -146,7 +146,7 @@ public class UserControllerTest {
     public void userCreateControllerParametrizeMethodTest(UserAppDto userAppDto, UserApp userApp) {
 
         //given
-        Mockito.when(userFeignClient.getAccess(anyLong())).thenReturn(true);
+        Mockito.when(userFeignClient.getAccess(anyString())).thenReturn(true);
         Mockito.when(userAppRepository.save(any(UserApp.class))).thenReturn(userApp);
 
         //when
@@ -165,12 +165,12 @@ public class UserControllerTest {
     private static Stream<Arguments> userProvider() {
         return Stream.of(
                 Arguments.of(
-                        new UserAppDto(123L, "Den", "test@mail.ru"),
-                        new UserApp(123L, "Den", "test@mail.ru")
+                        new UserAppDto("Den", "test@mail.ru"),
+                        new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp())
                 ),
                 Arguments.of(
-                        new UserAppDto(456L, "Alice", "testAlice@mail.ru"),
-                        new UserApp(456L, "Alice", "testAlice@mail.ru")
+                        new UserAppDto("Alice", "testAlice@mail.ru"),
+                        new UserApp(456L, "Alice", "testAlice@mail.ru", new AuthUserApp())
                 )
         );
     }
@@ -185,10 +185,10 @@ public class UserControllerTest {
     public void userCreateControllerParametrizeCSVTest(long id, String name, String email, boolean isAccess) {
 
         //given
-        UserAppDto userAppDto = new UserAppDto(id, name, email);
+        UserAppDto userAppDto = new UserAppDto(name, email);
 
-        Mockito.when(userFeignClient.getAccess(anyLong())).thenReturn(isAccess);
-        Mockito.when(userAppRepository.save(any(UserApp.class))).thenReturn(new UserApp(id, name, email));
+        Mockito.when(userFeignClient.getAccess(anyString())).thenReturn(isAccess);
+        Mockito.when(userAppRepository.save(any(UserApp.class))).thenReturn(new UserApp(id, name, email, new AuthUserApp()));
 
         //when
         MvcResult mvcResult = mockMvc.perform(post("/users/create")
@@ -210,7 +210,7 @@ public class UserControllerTest {
     public void userCreateControllerParametrizeEnumTest(EnumCase testCase) {
 
         //given
-        Mockito.when(userFeignClient.getAccess(anyLong())).thenReturn(testCase.getIsAccess());
+        Mockito.when(userFeignClient.getAccess(anyString())).thenReturn(testCase.getIsAccess());
         Mockito.when(userAppRepository.save(any(UserApp.class))).thenReturn(testCase.getUserApp());
 
         //when

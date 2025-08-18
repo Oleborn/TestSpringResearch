@@ -7,10 +7,8 @@ import oleborn.testresearch.model.entity.UserApp;
 import oleborn.testresearch.service.UserAppService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -23,6 +21,12 @@ public class UserAppController {
     public ResponseEntity<UserApp> createUserApp(@RequestBody @Valid UserAppDto userAppDto) {
         UserApp userApp = userAppService.create(userAppDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userApp);
+    }
+
+    @GetMapping("/get")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserAppDto> getUserApp(@RequestParam String mail) {
+        return ResponseEntity.ok(userAppService.getUser(mail));
     }
 
 }

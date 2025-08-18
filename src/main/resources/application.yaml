@@ -3,7 +3,7 @@ spring:
     name: TestResearch
 
   datasource:
-    url: jdbc:postgres://localhost:5435/main_db
+    url: jdbc:postgresql://localhost:5435/main_db
     username: postgres
     password: postgres
     hikari:
@@ -26,3 +26,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8081
+
+test_server:
+  baseUrl: "http://localhost:8080"
+
+jwt:
+  secretKey: testsecrettestsecrettestsecrettestsecrettestsecrettestsecrettestsecrettestsecret
+  expiration: 360000

@@ -2,6 +2,7 @@ package oleborn.testresearch.unittest;
 
 import oleborn.testresearch.mapper.UserAppMapperImpl;
 import oleborn.testresearch.model.dto.UserAppDto;
+import oleborn.testresearch.model.entity.AuthUserApp;
 import oleborn.testresearch.model.entity.UserApp;
 import oleborn.testresearch.repository.UserAppRepository;
 import oleborn.testresearch.service.UserAppService;
@@ -45,8 +46,8 @@ public class UserServiceTest {
         @Test
         public void createUserAppTest(){
 
-                UserAppDto userAppDto = new UserAppDto(123L, "Den", "test@mail.ru");
-                UserApp userApp = new UserApp(123L, "Den", "test@mail.ru");
+                UserAppDto userAppDto = new UserAppDto("Den", "test@mail.ru");
+                UserApp userApp = new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp());
 
                 Mockito.when(userAppRepository.save(any(UserApp.class))).thenReturn(userApp);
 
@@ -67,8 +68,8 @@ public class UserServiceTest {
         @Test
         public void createUserAppTestWithException(){
 
-                UserAppDto userAppDto = new UserAppDto(123L, "Den", "test@mail.ru");
-                UserApp userApp = new UserApp(123L, "Den", "test@mail.ru");
+                UserAppDto userAppDto = new UserAppDto("Den", "test@mail.ru");
+                UserApp userApp = new UserApp(123L, "Den", "test@mail.ru", new AuthUserApp());
 
                 Mockito.when(userAppRepository.findById(anyLong())).thenReturn(Optional.of(userApp));
 
