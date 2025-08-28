@@ -1,0 +1,7 @@
+{
+  "mail": "test@mail.ru",
+  "password": "$2a$10$k368ytRnBn3M5f3RyzpJWeb6dN74RdJh4UGWJ5pfycwjQD2eWEE1y",
+  "roles": [
+    "USER"
+  ]
+}

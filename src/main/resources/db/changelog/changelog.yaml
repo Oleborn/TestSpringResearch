@@ -1,2 +1,32 @@
 databaseChangeLog:
-  -
+  - changeSet:
+      id: 25_08_28_1_create_table_user_app.sql
+      author: oleborn
+      sqlFile:
+        path: dbscripts/25_08_28_1_create_table_user_app.sql
+        relativeToChangelogFile: true
+        splitStatements: true
+        endDelimiter: ;
+  - changeSet:
+      id: 25_08_28_2_create_table_auth_user_app.sql
+      author: oleborn
+      sqlFile:
+        path: dbscripts/25_08_28_2_create_table_auth_user_app.sql
+        relativeToChangelogFile: true
+        splitStatements: true
+        endDelimiter: ;
+  - changeSet:
+      id: 25_08_28_3_create_table_auth_user_app_roles.sql
+      author: oleborn
+      sqlFile:
+        path: dbscripts/25_08_28_3_create_table_auth_user_app_roles.sql
+        relativeToChangelogFile: true
+        splitStatements: true
+        endDelimiter: ;
+  - changeSet:
+      id: 25_08_28_4_create_trigger.sql
+      author: oleborn
+      sqlFile:
+        path: dbscripts/25_08_28_4_create_trigger.sql
+        relativeToChangelogFile: false
+        splitStatements: true

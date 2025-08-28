@@ -78,9 +78,14 @@ public class UserAppServiceImpl implements UserAppService {
     @Override
     public String loginUser(LoginDto loginDto) {
 
-        Optional<AuthUserApp> authUserApp = authUserAppRepository.findByMailAndPassword(loginDto.mail(), passwordEncoder.encode(loginDto.password()));
+        Optional<AuthUserApp> authUserApp = authUserAppRepository.findByMail(loginDto.mail());
+
         if (authUserApp.isEmpty()) {
             throw new RuntimeException("User app does not exist");
+        }
+
+        if (!passwordEncoder.matches(loginDto.password(), authUserApp.get().getPassword())) {
+            throw new RuntimeException("Wrong password");
         }
 
         String token = jwtUtils.generateToken(authUserApp.get().getMail(), authUserApp.get().getRoles());

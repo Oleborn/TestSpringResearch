@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "auth_user")
 @Builder
+@ToString
 public class AuthUserApp {
 
     @Id
@@ -28,7 +29,6 @@ public class AuthUserApp {
     private List<String> roles;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapsId
     @JoinColumn(name = "user_app_id")
     private UserApp userApp;
 
